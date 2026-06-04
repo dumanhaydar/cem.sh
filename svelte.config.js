@@ -1,14 +1,12 @@
-import adapter from '@sveltejs/adapter-static';
+import adapter from '@sveltejs/adapter-cloudflare';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
 	preprocess: vitePreprocess(),
 	kit: {
-		// SPA mode: fallback page, no SSR. Pure client-side rendering.
-		adapter: adapter({
-			fallback: 'index.html'
-		})
+		// Deploys to Cloudflare Pages. The app itself is CSR-only (see +layout.js).
+		adapter: adapter()
 	}
 };
 

@@ -16,14 +16,25 @@ Pure **CSR** SvelteKit SPA — no backend, no tracking, no purpose. fish-flavore
 
 ## Stack
 
-- [SvelteKit](https://svelte.dev/) (Svelte 5 runes) — `adapter-static`, SPA mode (`ssr = false`)
+- [SvelteKit](https://svelte.dev/) (Svelte 5 runes) — CSR-only (`ssr = false`)
 - [TailwindCSS v4](https://tailwindcss.com/)
+- Deploys to [Cloudflare Pages](https://pages.cloudflare.com/) via `@sveltejs/adapter-cloudflare`
 
 ## Develop
 
 ```sh
 npm install
 npm run dev      # http://localhost:5173
-npm run build    # static SPA → build/
+npm run build    # → .svelte-kit/cloudflare/
 npm run preview
 ```
+
+## Deploy (Cloudflare Pages)
+
+Git-integrated: connect the repo in the Cloudflare dashboard with build command
+`npm run build` and output directory `.svelte-kit/cloudflare`. Or one-shot:
+
+```sh
+npm run build && npx wrangler pages deploy
+```
+
