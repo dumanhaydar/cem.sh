@@ -6,6 +6,28 @@
 	const user = 'guest';
 	const host = 'cem.sh';
 
+	// Persisted command history (recalled with ↑/↓, feeds autosuggestions).
+	const HISTORY_KEY = 'cem.sh:history';
+	const HISTORY_MAX = 200;
+
+	function loadHistory() {
+		try {
+			const raw = localStorage.getItem(HISTORY_KEY);
+			const parsed = raw ? JSON.parse(raw) : [];
+			return Array.isArray(parsed) ? parsed.filter((x) => typeof x === 'string') : [];
+		} catch {
+			return [];
+		}
+	}
+
+	function saveHistory() {
+		try {
+			localStorage.setItem(HISTORY_KEY, JSON.stringify(cmdHistory.slice(-HISTORY_MAX)));
+		} catch {
+			// storage unavailable (private mode / quota) — history stays session-only
+		}
+	}
+
 	// history is a list of blocks: either an echoed prompt+command, or output lines
 	let history = $state([]);
 	let input = $state('');
@@ -99,6 +121,7 @@
 		if (trimmed) {
 			cmdHistory.push(trimmed);
 			histIndex = cmdHistory.length;
+			saveHistory();
 		}
 
 		const { lines, effect } = runCommand(value, { user, host });
@@ -149,6 +172,8 @@
 	}
 
 	onMount(() => {
+		cmdHistory = loadHistory();
+		histIndex = cmdHistory.length;
 		boot();
 	});
 
