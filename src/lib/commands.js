@@ -99,6 +99,7 @@ function buildCV() {
 		{ text: '  Edenred · Careways · FR-Team International · Brakestore' },
 		{ text: '  Charleroi Duty Free · La Cité des Nuages' },
 		{ text: '' },
+		{ kv: ['email', 'haydar@duman.io'] },
 		{ kv: ['web', 'https://duman.io'] },
 		{ kv: ['github', 'https://github.com/dumanhaydar'] },
 		{ kv: ['company', 'https://aroneus.com'] },
