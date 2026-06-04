@@ -162,44 +162,26 @@
 </script>
 
 <svelte:head>
-	<title>cem.sh — a terminal that does nothing</title>
+	<title>{user}@{host}: ~ — fish — 80×24</title>
 </svelte:head>
 
-<main
-	class="crt flicker flex h-screen w-screen items-center justify-center bg-term-bg p-0 sm:p-6"
->
-	<!-- terminal window -->
-	<div
-		class="relative flex h-full w-full max-w-4xl flex-col overflow-hidden border border-white/5 bg-term-bg-soft shadow-2xl shadow-black/60 sm:h-[80vh] sm:rounded-xl"
+<!-- the entire screen is the terminal -->
+<main class="crt flicker relative flex h-screen w-screen flex-col bg-term-bg-soft">
+	<!-- screen -->
+	<button
+		type="button"
+		onclick={focusInput}
+		class="relative flex-1 cursor-text overflow-hidden text-left"
+		aria-label="focus terminal"
 	>
-		<!-- title bar -->
+		{#if matrixOn}
+			<MatrixRain />
+		{/if}
+
 		<div
-			class="flex shrink-0 items-center gap-2 border-b border-white/5 bg-black/30 px-4 py-2.5"
+			bind:this={viewport}
+			class="term-scroll absolute inset-0 overflow-y-auto px-4 py-3 font-mono text-[13px] leading-relaxed text-term-fg sm:text-sm"
 		>
-			<span class="h-3 w-3 rounded-full bg-[#ff5f57]"></span>
-			<span class="h-3 w-3 rounded-full bg-[#febc2e]"></span>
-			<span class="h-3 w-3 rounded-full bg-[#28c840]"></span>
-			<span class="ml-3 flex items-center gap-2 select-none font-mono text-xs text-term-dim">
-				<span class="font-semibold tracking-tight text-term-green">&gt;_</span>
-				{user}@{host}: ~ — fish — 80×24
-			</span>
-		</div>
-
-		<!-- screen -->
-		<button
-			type="button"
-			onclick={focusInput}
-			class="relative flex-1 cursor-text overflow-hidden text-left"
-			aria-label="focus terminal"
-		>
-			{#if matrixOn}
-				<MatrixRain />
-			{/if}
-
-			<div
-				bind:this={viewport}
-				class="term-scroll absolute inset-0 overflow-y-auto px-4 py-3 font-mono text-[13px] leading-relaxed text-term-fg sm:text-sm"
-			>
 				{#snippet fishPrompt()}
 					<span style="color: var(--accent)">{user}@{host}</span><span class="ml-2 text-term-blue"
 						>~</span
@@ -257,7 +239,6 @@
 			<span class="hidden sm:inline">⇥ accept · ↑/↓ history · ⌃L clear · type 'help'</span>
 			<span style="color: var(--accent)">●</span>
 		</div>
-	</div>
 </main>
 
 <style>
