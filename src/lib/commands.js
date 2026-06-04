@@ -138,11 +138,11 @@ function buildKurdistan() {
 	return [
 		bar(KURD_RED),
 		bar(KURD_RED),
-		bar(KURD_WHT),
+		bar(KURD_RED),
 		sunRow('  \\|/  '),
 		sunRow(' ──☀── '),
 		sunRow('  /|\\  '),
-		bar(KURD_WHT),
+		bar(KURD_GRN),
 		bar(KURD_GRN),
 		bar(KURD_GRN),
 		{ text: '' },
