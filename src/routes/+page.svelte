@@ -124,10 +124,15 @@
 			saveHistory();
 		}
 
-		const { lines, effect } = runCommand(value, { user, host });
+		const { lines, effect } = runCommand(value, { user, host, history: cmdHistory });
 
 		if (effect === 'clear') {
 			history = [];
+		} else if (effect === 'history-clear') {
+			cmdHistory = [];
+			histIndex = 0;
+			saveHistory();
+			history.push({ type: 'out', lines });
 		} else if (effect === 'matrix') {
 			matrixOn = !matrixOn;
 			history.push({ type: 'out', lines });

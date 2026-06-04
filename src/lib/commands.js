@@ -20,6 +20,7 @@ const HELP = [
 	{ cmd: 'cat <file>', desc: 'read a file that may not exist' },
 	{ cmd: 'sudo <cmd>', desc: 'try your luck' },
 	{ cmd: 'cowsay <text>', desc: 'a cow says it' },
+	{ cmd: 'history [clear]', desc: 'past commands · clear to wipe' },
 	{ cmd: 'matrix', desc: 'toggle the rain' },
 	{ cmd: 'theme', desc: 'cycle accent color' },
 	{ cmd: 'clear', desc: 'wipe the screen' },
@@ -40,6 +41,7 @@ export const COMMANDS = [
 	'cat',
 	'sudo',
 	'cowsay',
+	'history',
 	'matrix',
 	'theme',
 	'clear',
@@ -188,6 +190,15 @@ export function runCommand(raw, ctx) {
 
 		case 'cowsay':
 			return { lines: [{ text: cowsay(arg), cls: 'text-term-green' }] };
+
+		case 'history': {
+			const sub = arg.trim().toLowerCase();
+			if (sub === 'clear' || sub === '-c')
+				return { lines: [{ text: 'history cleared.', cls: 'text-term-dim' }], effect: 'history-clear' };
+			const items = ctx.history ?? [];
+			if (!items.length) return { lines: [{ text: 'no history yet.', cls: 'text-term-dim' }] };
+			return { lines: items.map((c, i) => ({ text: `  ${String(i + 1).padStart(3)}  ${c}` })) };
+		}
 
 		case 'matrix':
 			return { lines: [{ text: 'wake up...', cls: 'text-term-green' }], effect: 'matrix' };
