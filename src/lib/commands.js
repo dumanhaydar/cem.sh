@@ -117,6 +117,46 @@ function buildCV() {
 	});
 }
 
+// --- hidden easter egg: the Kurdistan flag (Alaya Rengîn) -------------------
+const KURD_RED = '#ED2939';
+const KURD_GRN = '#239F40';
+const KURD_WHT = '#f4f4f5';
+const KURD_SUN = '#FEDF00';
+
+function buildKurdistan() {
+	const W = 27;
+	const block = '█'.repeat(W);
+	const side = '█'.repeat(10); // 10 + 7 + 10 = 27
+	const bar = (color) => ({ segs: [{ text: block, style: `color:${color}` }] });
+	const sunRow = (mid) => ({
+		segs: [
+			{ text: side, style: `color:${KURD_WHT}` },
+			{ text: mid, style: `color:${KURD_SUN}` },
+			{ text: side, style: `color:${KURD_WHT}` }
+		]
+	});
+	return [
+		bar(KURD_RED),
+		bar(KURD_RED),
+		bar(KURD_WHT),
+		sunRow('  \\|/  '),
+		sunRow(' ──☀── '),
+		sunRow('  /|\\  '),
+		bar(KURD_WHT),
+		bar(KURD_GRN),
+		bar(KURD_GRN),
+		{ text: '' },
+		{
+			segs: [
+				{ text: 'Her bijî Kurdistan! ', style: `color:${KURD_GRN}` },
+				{ text: '☀', style: `color:${KURD_SUN}` }
+			]
+		},
+		{ text: 'Roja Kurdistanê — 21 rays: Newroz, light, rebirth.', cls: 'text-term-dim' },
+		{ text: '' }
+	];
+}
+
 // Each handler returns { lines, effect? }.
 // `effect` is an optional signal to the UI (clear / matrix / theme / exit).
 export function runCommand(raw, ctx) {
@@ -190,6 +230,19 @@ export function runCommand(raw, ctx) {
 
 		case 'cowsay':
 			return { lines: [{ text: cowsay(arg), cls: 'text-term-green' }] };
+
+		// hidden — not in help, not autosuggested. Bijî Kurdistan. ☀
+		case 'kurdistan':
+		case 'kurd':
+		case 'kurde':
+		case 'newroz':
+		case 'nawroz':
+		case 'rojava':
+		case 'herbiji':
+		case 'her':
+		case 'biji':
+		case 'bijî':
+			return { lines: buildKurdistan() };
 
 		case 'history': {
 			const sub = arg.trim().toLowerCase();

@@ -226,7 +226,13 @@
 						</div>
 					{:else}
 						{#each block.lines as line}
-							<div class="whitespace-pre-wrap break-words {line.cls ?? ''}">{line.text}</div>
+							{#if line.segs}
+								<div class="whitespace-pre-wrap break-words"
+									>{#each line.segs as s}<span class={s.cls} style={s.style}>{s.text}</span>{/each}</div
+								>
+							{:else}
+								<div class="whitespace-pre-wrap break-words {line.cls ?? ''}">{line.text}</div>
+							{/if}
 						{/each}
 					{/if}
 				{/each}
