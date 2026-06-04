@@ -11,6 +11,8 @@ const ASCII = String.raw`
 const HELP = [
 	{ cmd: 'help', desc: 'show this message' },
 	{ cmd: 'about', desc: 'what is this thing?' },
+	{ cmd: 'cv', desc: 'who built this — Duman Haydar' },
+	{ cmd: 'haydar', desc: 'alias for cv' },
 	{ cmd: 'whoami', desc: 'you, probably' },
 	{ cmd: 'echo <text>', desc: 'say it back' },
 	{ cmd: 'date', desc: 'the current moment' },
@@ -29,6 +31,8 @@ const HELP = [
 export const COMMANDS = [
 	'help',
 	'about',
+	'cv',
+	'haydar',
 	'whoami',
 	'echo',
 	'date',
@@ -71,6 +75,45 @@ function cowsay(text) {
 	].join('\n');
 }
 
+// Real info about the person who built this — sourced from https://duman.io
+function buildCV() {
+	return [
+		{ text: 'DUMAN HAYDAR', cls: 'text-term-cyan' },
+		{ text: 'Développeur dévoué et passionné — backend · frontend · mobile · IoT', cls: 'text-term-dim' },
+		{ text: '' },
+		{ kv: ['role', 'Developer @ Aroneus (SRL Aroneus)'] },
+		{ kv: ['location', 'Liège, Belgium'] },
+		{ kv: ['started', 'coding at age 10 · insatiably curious ever since'] },
+		{ text: '' },
+		{ text: 'languages', cls: 'text-term-yellow' },
+		{ text: '  JavaScript/TypeScript · Go · PHP · Python · Dart · Swift · CSS/SCSS' },
+		{ text: 'frameworks', cls: 'text-term-yellow' },
+		{ text: '  Svelte(Kit) · React / React Native · Express · Fiber · Symfony · Laravel' },
+		{ text: '  TailwindCSS · Flutter' },
+		{ text: 'data', cls: 'text-term-yellow' },
+		{ text: '  PostgreSQL · MySQL/MariaDB · MongoDB · Firestore · ElasticSearch' },
+		{ text: 'architecture & cloud', cls: 'text-term-yellow' },
+		{ text: '  CQRS · Event Sourcing · Microservices · GCP · LLM' },
+		{ text: '' },
+		{ text: 'selected clients', cls: 'text-term-yellow' },
+		{ text: '  Edenred · Careways · FR-Team International · Brakestore' },
+		{ text: '  Charleroi Duty Free · La Cité des Nuages' },
+		{ text: '' },
+		{ kv: ['web', 'https://duman.io'] },
+		{ kv: ['github', 'https://github.com/dumanhaydar'] },
+		{ kv: ['company', 'https://aroneus.com'] },
+		{ kv: ['phone', '+32 (0) 471 24 88 22'] },
+		{ text: '' },
+		{ text: "ps — this very terminal is built with his stack: SvelteKit + Tailwind on Cloudflare.", cls: 'text-term-dim' }
+	].map((l) => {
+		if (l.kv) {
+			const [label, value] = l.kv;
+			return { text: `  ${label.padEnd(9)} ${value}` };
+		}
+		return l;
+	});
+}
+
 // Each handler returns { lines, effect? }.
 // `effect` is an optional signal to the UI (clear / matrix / theme / exit).
 export function runCommand(raw, ctx) {
@@ -102,6 +145,10 @@ export function runCommand(raw, ctx) {
 					}
 				]
 			};
+
+		case 'cv':
+		case 'haydar':
+			return { lines: buildCV() };
 
 		case 'whoami':
 			return { lines: [{ text: 'guest@cem.sh — an honored visitor of no particular rank.' }] };
